@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "start": "nodemon ./server/app.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "node": "^22.9.0",
+    "node-fetch": "^3.3.2",
+    "node-google-translate-skidz": "^1.1.2",
+    "nodemon": "^3.1.5"
+  }
+}
