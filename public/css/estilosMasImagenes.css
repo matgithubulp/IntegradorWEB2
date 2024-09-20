@@ -1,0 +1,11 @@
+.galeria {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .imagen-adicional {
+    width: 200px; /* Ajusta el tamaño según sea necesario */
+    height: auto;
+    border: 1px solid #ccc; /* Estilo opcional */
+  }

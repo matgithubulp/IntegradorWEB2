@@ -1,51 +1,77 @@
+/* Estilos para el contenedor principal */
 .contenedor {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .filtros {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .tarjetas {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-  }
-  
-  .tarjeta {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .tarjeta-img-superior {
-    width: 100%;
-    height: auto;
-  }
-  
-  .cuerpo-tarjeta {
-    padding: 10px;
-  }
-  
-  .titulo-tarjeta {
-    font-size: 1.2em;
-    margin: 0 0 10px;
-  }
-  
-  .texto-tarjeta {
-    margin: 5px 0;
-  }
-  
-  .paginacion {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+/* Estilos para los filtros */
+.filtros {
+  margin-bottom: 20px;
+}
+
+.filtros select,
+.filtros input,
+.filtros button {
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
+}
+
+/* Estilos para las tarjetas */
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.tarjeta {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tarjeta-img-superior {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.cuerpo-tarjeta {
+  padding: 15px;
+}
+
+.titulo-tarjeta {
+  font-size: 1.2em;
+  margin: 0 0 10px;
+}
+
+.texto-tarjeta {
+  font-size: 0.9em;
+  margin: 5px 0;
+}
+
+/* Estilos para la paginación */
+.paginacion {
+  margin-top: 20px;
+}
+
+.paginacion button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.paginacion span {
+  font-size: 18px;
+  font-weight: bold;
+}

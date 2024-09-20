@@ -25,7 +25,10 @@ Error: listen EADDRINUSE: address already in use :::3000
 
 
 
-
+## COsas que debo hacer
+- **modularizar scrip.js y api.js**
+- **uttilizar pug**
+- **realizar algunas correcciones de codigo (leerlo nuevamente)**
 
 
 

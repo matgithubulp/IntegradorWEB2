@@ -52,11 +52,13 @@ router.get('/objeto/:id', async (req, res) => {
     const response = await fetch(`${urlAPI}objects/${id}`);
     const data = await response.json();
 
+   
     // Traducción de los campos relevantes
     const title = await translateText(data.title);
     const culture = await translateText(data.culture || 'Desconocido');
     const dynasty = await translateText(data.dynasty || 'Desconocido');
-
+    
+    
     // Respuesta con los datos traducidos
     res.json({ ...data, title, culture, dynasty });
   } catch (error) {
@@ -67,6 +69,10 @@ router.get('/objeto/:id', async (req, res) => {
 
 // Función de traducción utilizando `node-google-translate-skidz`
 async function translateText(text) {
+  if (!text || typeof text !== 'string') {
+    return 'Sin traducción'; 
+  }
+
   try {
     const result = await translate({
       text,
@@ -78,10 +84,11 @@ async function translateText(text) {
     if (result && result.translation) {
       return result.translation;
     } else {
-      return 'Error en la traduccion'; //
+      return 'Error en la traducción'; 
     }
   } catch (error) {
-    console.error('Error en la traduccion:', error);
+    console.error('Error en la traducción:', error);
+    return 'Error en la traducción'; 
   }
 }
 
