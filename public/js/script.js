@@ -101,7 +101,7 @@ async function mostrarPagina(pagina) {
     } else {
       crearTarjeta({
         title: objetoData.title || 'Sin título',
-        primaryImageSmall: objetoData.primaryImageSmall || 'https://via.placeholder.com/150',
+        primaryImageSmall: objetoData.primaryImageSmall || 'http://placeholder-image.com/api/placeholderimage?width=150&fontweight=false&fontstyle=true&fontdecoration=false&height=150&text=SIUUUUUUUUU&color=%230a0a0a&fontFamily=arial&fontSize=small&background=%233f8857',
         culture: objetoData.culture || 'Desconocido',
         dynasty: objetoData.dynasty || 'Desconocido',
         objectDate: objetoData.objectDate || objetoData.period || 'Desconocido'
