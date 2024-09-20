@@ -35,6 +35,8 @@ async function cargarSelect() {
 // Buscar elementos segun palabra clave y localizzacion
 async function buscarElementos(event) {
   event.preventDefault();
+  const spinner = document.getElementById('spinner');
+  spinner.style.display = 'block'; // Mostrar el spinner
 
   try {
     const departamentoId = selectDepartamento.value;
@@ -71,10 +73,15 @@ async function buscarElementos(event) {
     }
   } catch (error) {
     console.error('Error al buscar el elemento', error);
+  } finally {
+    spinner.style.display = 'none'; // Ocultar el spinner al final
   }
 }
 
 async function mostrarPagina(pagina) {
+  const spinner = document.getElementById('spinner');
+  spinner.style.display = 'block'; // Mostrar el spinner
+
   const inicio = (pagina - 1) * 20;
   const fin = inicio + 20;
   const objetosPagina = idsObjetos.slice(inicio, fin);
@@ -83,16 +90,15 @@ async function mostrarPagina(pagina) {
 
   let tarjetasCreadas = 0; 
 
-  for (const objetoID of objetosPagina) {
+  // Crear todas las tarjetas en paralelo
+  const promesas = objetosPagina.map(async (objetoID) => {
     const objetoRespuesta = await fetch(`${urlAPI}objeto/${objetoID}`);
     const objetoData = await objetoRespuesta.json();
 
-    
     if (objetoData.title && objetoData.primaryImageSmall) {
       crearTarjeta(objetoData);
       tarjetasCreadas++;
     } else {
-     
       crearTarjeta({
         title: objetoData.title || 'Sin título',
         primaryImageSmall: objetoData.primaryImageSmall || 'https://via.placeholder.com/150',
@@ -102,11 +108,13 @@ async function mostrarPagina(pagina) {
       });
       tarjetasCreadas++;
     }
+  });
 
-    if (tarjetasCreadas >= 20) break;
-  }
-
+  // Esperar a que se creen todas las tarjetas
+  await Promise.all(promesas);
+  
   paginaActualTexto.textContent = paginaActual;
+  spinner.style.display = 'none'; // Ocultar el spinner al final
 }
 
 // crear tarjetas

@@ -15,7 +15,4 @@ if (images) {
     img.classList.add('imagen-adicional');
     galeria.appendChild(img);
   });
-} else {
-  const galeria = document.getElementById('galeria');
-  galeria.innerHTML = '<p>No hay imágenes disponibles.</p>';
-}
+} 
