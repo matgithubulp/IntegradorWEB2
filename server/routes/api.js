@@ -17,31 +17,49 @@ router.get('/departments', async (req, res) => {
   }
 });
 
-// Ruta para buscar elementos
+
 router.get('/buscar', async (req, res) => {
   try {
     const palabra = req.query.palabra;
     const localizacion = req.query.localizacion;
-    let url = `${urlAPI}search?q=${palabra}&hasImages=true`;
+    const departamentoId = req.query.departamentoId;
+    let url = `${urlAPI}search?hasImages=true`;
 
-    if (localizacion) {
-      url += `&geoLocation=${localizacion}`;
+    // Agregar palabra clave
+    if (palabra) {
+      url += `&q=${palabra}`;
     }
+
+    // Agregar localización
+    if (localizacion) {
+      url += `&q=${palabra ? `${palabra} ` : ''}&geoLocation=${localizacion}`;
+    }
+
+    // Agregar departamento
+    if (departamentoId) {
+      url += `&q=${palabra ? `${palabra} ` : ''}&departmentId=${departamentoId}`;
+    }
+
+    console.log('url para buscar():', url);
 
     const fetch = (await import('node-fetch')).default;
     const response = await fetch(url);
+
+
     const data = await response.json();
 
     if (data.objectIDs && data.objectIDs.length > 0) {
       res.json(data.objectIDs);
-    } else {
-      res.json([]);
-    }
+    } 
   } catch (error) {
     console.error('Error al buscar el elemento:', error);
     res.status(500).json({ error: 'Error al buscar el elemento' });
   }
 });
+
+
+
+
 
 // Ruta para obtener un objeto traducido
 router.get('/objeto/:id', async (req, res) => {

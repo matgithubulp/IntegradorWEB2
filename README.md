@@ -3,7 +3,8 @@
 ##### **URGENTE**
 - **problema:**
 Error: listen EADDRINUSE: address already in use :::3000
-
+- **Solucion:**
+Se estaba ejecutando el puerto, tuve que "matarlos".  
 
 
 ############################## Problemas ACTUALES  ###########################################

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Museo Metropolitano de NY</title>
   <link rel="stylesheet" href="/css/estilos.css">
-  <script defer src="/js/script.js"></script>
+  <script defer src="/js/script.js" type="module"></script>
 </head>
 <body>
   <div class="contenedor">
@@ -14,8 +14,8 @@
       <select id="seleccion-departamento">
         <option value="">Seleccione un departamento</option>
       </select>
-      <input type="text" id="entrada-palabra" placeholder="Palabra clave">
-      <input type="text" id="entrada-localizacion" placeholder="Localización">
+      <input type="text" id="entrada-palabra" placeholder="EJ: book, flowers">
+      <input type="text" id="entrada-localizacion" placeholder="EJ: Europe, France ">
       <button id="boton-buscar" onclick="buscarElementos()">Buscar</button>
     </div>
     <div id="contenedor-tarjetas" class="tarjetas"></div>
