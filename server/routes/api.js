@@ -25,17 +25,17 @@ router.get('/buscar', async (req, res) => {
     const departamentoId = req.query.departamentoId;
     let url = `${urlAPI}search?hasImages=true`;
 
-    // Agregar palabra clave
+    // Agregar palabra clave a la url
     if (palabra) {
       url += `&q=${palabra}`;
     }
 
-    // Agregar localización
+    // Agregar la localizacion a la url
     if (localizacion) {
       url += `&q=${palabra ? `${palabra} ` : ''}&geoLocation=${localizacion}`;
     }
 
-    // Agregar departamento
+    // Agregar el partamento
     if (departamentoId) {
       url += `&q=${palabra ? `${palabra} ` : ''}&departmentId=${departamentoId}`;
     }
@@ -58,9 +58,6 @@ router.get('/buscar', async (req, res) => {
 });
 
 
-
-
-
 // Ruta para obtener un objeto traducido
 router.get('/objeto/:id', async (req, res) => {
   const { id } = req.params;
@@ -71,7 +68,7 @@ router.get('/objeto/:id', async (req, res) => {
     const data = await response.json();
 
    
-    // Traducción de los campos relevantes
+    // Traduccion  -> me falta la fecha
     const title = await translateText(data.title);
     const culture = await translateText(data.culture || 'Desconocido');
     const dynasty = await translateText(data.dynasty || 'Desconocido');
@@ -92,14 +89,14 @@ async function translateText(text) {
   }
 
   try {
-    const result = await translate({
+    const resultado = await translate({
       text,
       source: 'en',  
       target: 'es'   
     });
 
     // Verifica que haya un resultado y devuelve la traducción
-    if (result && result.translation) {
+    if (resultado && resultado.translation) {
       return result.translation;
     } else {
       return 'Error en la traducción'; 

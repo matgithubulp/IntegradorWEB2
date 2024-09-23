@@ -5,13 +5,13 @@ const apiRoutes = require('./routes/api'); // Importamos las rutas de la API des
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Servir archivos estáticos desde la carpeta "public"
+// Middleware para servir archivos estáticos
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Usar las rutas de la API con prefijo /api
+// Usar las rutas de la API con prefijo /api -> lo hago asi para llamarlo desde script.js
 app.use('/api', apiRoutes);
 
-// Iniciar el servidor
+
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
+  console.log(`El servidor esta activo ${PORT}`);
 });
