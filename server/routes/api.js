@@ -73,7 +73,6 @@ router.get('/objeto/:id', async (req, res) => {
     const culture = await translateText(data.culture || 'Desconocido');
     const dynasty = await translateText(data.dynasty || 'Desconocido');
     
-    
     // Respuesta con los datos traducidos
     res.json({ ...data, title, culture, dynasty });
   } catch (error) {
@@ -95,9 +94,9 @@ async function translateText(text) {
       target: 'es'   
     });
 
-    // Verifica que haya un resultado y devuelve la traducción
+    
     if (resultado && resultado.translation) {
-      return result.translation;
+      return resultado.translation; 
     } else {
       return 'Error en la traducción'; 
     }
@@ -106,5 +105,6 @@ async function translateText(text) {
     return 'Error en la traducción'; 
   }
 }
+
 
 module.exports = router;

@@ -23,9 +23,9 @@ export async function buscarElementos(event, domElements) {
 
   try {
     const { selectDepartamento, entradaPalabra, entradaLocalizacion, contenedorTarjetas } = domElements;
-    const departamentoId = selectDepartamento.value;  // Obtiene el valor del select (puede ser vacío)
-    const palabra = entradaPalabra.value.trim();      // Obtiene la palabra clave
-    const localizacionValor = entradaLocalizacion.value.trim();  // Obtiene la localización
+    const departamentoId = selectDepartamento.value;
+    const palabra = entradaPalabra.value;      
+    const localizacionValor = entradaLocalizacion.value;  
 
     // Comienza a construir la URL de búsqueda
     let url = `${config.urlAPI}buscar?`;
