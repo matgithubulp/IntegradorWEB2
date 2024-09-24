@@ -1,13 +1,13 @@
-import express from 'express';
-import translate from 'node-google-translate-skidz';
-import fetch from 'node-fetch';
-
+const express = require('express');
+const translate = require('node-google-translate-skidz');
 const router = express.Router();
+
 const urlAPI = 'https://collectionapi.metmuseum.org/public/collection/v1/';
 
 // Ruta para obtener departamentos
 router.get('/departments', async (req, res) => {
   try {
+    const fetch = (await import('node-fetch')).default;
     const response = await fetch(`${urlAPI}departments`);
     const data = await response.json();
     res.json(data);
@@ -17,7 +17,7 @@ router.get('/departments', async (req, res) => {
   }
 });
 
-// Ruta para buscar
+
 router.get('/buscar', async (req, res) => {
   try {
     const palabra = req.query.palabra;
@@ -42,7 +42,10 @@ router.get('/buscar', async (req, res) => {
 
     console.log('url para buscar():', url);
 
+    const fetch = (await import('node-fetch')).default;
     const response = await fetch(url);
+
+
     const data = await response.json();
 
     if (data.objectIDs && data.objectIDs.length > 0) {
@@ -54,14 +57,17 @@ router.get('/buscar', async (req, res) => {
   }
 });
 
+
 // Ruta para obtener un objeto traducido
 router.get('/objeto/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
+    const fetch = (await import('node-fetch')).default;
     const response = await fetch(`${urlAPI}objects/${id}`);
     const data = await response.json();
 
+   
     // Traduccion  -> me falta la fecha
     const title = await translateText(data.title);
     const culture = await translateText(data.culture || 'Desconocido');
@@ -88,6 +94,7 @@ async function translateText(text) {
       target: 'es'   
     });
 
+    
     if (resultado && resultado.translation) {
       return resultado.translation; 
     } else {
@@ -99,4 +106,5 @@ async function translateText(text) {
   }
 }
 
-export default router;
+
+module.exports = router;

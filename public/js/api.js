@@ -72,3 +72,4 @@ export async function buscarElementos(event, domElements) {
 }
 
 
+export default router;
