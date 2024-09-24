@@ -1,4 +1,4 @@
-// main.js
+
 import { domElements } from './domElements.js';
 import { cargarSelect, buscarElementos } from './api.js';
 import { mostrarPagina, actualizarBotones } from './ui.js';
