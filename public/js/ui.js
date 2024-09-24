@@ -23,7 +23,7 @@ export async function mostrarPagina(pagina, domElements) {
   spinner.style.display = 'none';
 }
 
-export function crearTarjeta(objeto, contenedorTarjetas) {
+function crearTarjeta(objeto, contenedorTarjetas) {
   if (!objeto.title || objeto.title === 'undefined') return;
 
   const tarjeta = document.createElement('div');
