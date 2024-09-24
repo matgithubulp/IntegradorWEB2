@@ -1,6 +1,6 @@
-const express = require('express');
-const path = require('path');
-const apiRoutes = require('./routes/api'); // Importamos las rutas de la API desde api.js
+import express from 'express';
+import path from 'path';
+import apiRoutes from './routes/api'; // Importamos las rutas de la API desde api.js
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,7 +11,6 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Usar las rutas de la API con prefijo /api -> lo hago asi para llamarlo desde script.js
 app.use('/api', apiRoutes);
 
-
 app.listen(PORT, () => {
   console.log(`El servidor esta activo ${PORT}`);
-});
+})
