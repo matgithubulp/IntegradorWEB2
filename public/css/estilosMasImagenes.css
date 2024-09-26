@@ -5,7 +5,7 @@
   }
   
   .imagen-adicional {
-    width: 200px; /* Ajusta el tamaño según sea necesario */
+    width: 200px; 
     height: auto;
-    border: 1px solid #ccc; /* Estilo opcional */
+    border: 1px solid #ccc; 
   }

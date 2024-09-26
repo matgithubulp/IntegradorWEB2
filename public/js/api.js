@@ -1,74 +1,125 @@
+// Importacion de los modulos que se van a utilizar, express para las consultas y node-google-translate-skidz para la traduccion
+const express = require('express');
+const translate = require('node-google-translate-skidz');
+const router = express.Router(); // Crea un nuevo enrutador para manejar las rutas
 
-import { config } from './config.js';
-import { mostrarPagina, actualizarBotones } from './ui.js';
-export async function cargarSelect(selectDepartamento) {
+// URL base de la API
+const urlAPI = 'https://collectionapi.metmuseum.org/public/collection/v1/';
+
+// Ruta para obtener departamentos
+// Cuando el usuario accede a /departments, se hace una solicitud a la API del museo
+router.get('/departments', async (req, res) => {
   try {
-    const respuesta = await fetch(`${config.urlAPI}departments`);
-    const data = await respuesta.json();
-
-    data.departments.forEach(departamento => {
-      const opcionSelect = document.createElement('option');
-      opcionSelect.setAttribute('value', departamento.departmentId);
-      opcionSelect.textContent = departamento.displayName;
-      selectDepartamento.appendChild(opcionSelect);
-    });
+    const fetch = (await import('node-fetch')).default;
+  
+    // Hace una solicitud a la API del museo para obtener los departamentos
+    const response = await fetch(`${urlAPI}departments`);
+    const data = await response.json(); // Convierte la respuesta en JSON
+    
+    // Devuelve los departamentos obtenidos en formato JSON al cliente
+    res.json(data);
   } catch (error) {
     console.error('Error al cargar los departamentos:', error);
+    res.status(500).json({ error: 'Error al cargar los departamentos' });
   }
-}
+});
 
-export async function buscarElementos(event, domElements) {
-  event.preventDefault();
-  domElements.spinner.style.display = 'block';
+// Ruta para buscar objetos segun filtros de palabra 
+router.get('/buscar', async (req, res) => {
+  try {
+    // Obtiene los parametros de la consulta 
+    const palabra = req.query.palabra;
+    const localizacion = req.query.localizacion;
+    const departamentoId = req.query.departamentoId;
+    
+    // Comienza a formar la URL para hacer la busqueda en la API
+    let url = `${urlAPI}search?hasImages=true`;
+
+    // Si se da una palabra clave, la agrega a la URL
+    if (palabra) {
+      url += `&q=${palabra}`;
+    }
+
+    // Si se da una localización, la agregaa la URL
+    if (localizacion) {
+      url += `&q=${palabra ? `${palabra} ` : ''}&geoLocation=${localizacion}`;
+    }
+
+    // Si se da un ID de departamento, lo agrrega a la URL
+    if (departamentoId) {
+      url += `&q=${palabra ? `${palabra} ` : ''}&departmentId=${departamentoId}`;
+    }
+
+    // este console.log esta para depurar
+    console.log('url para buscar():', url);
+
+    // Realiza la solicitud a la API usando la URL formada
+    const fetch = (await import('node-fetch')).default;
+    const response = await fetch(url);
+
+    // Convierte la respuesta en JSON
+    const data = await response.json();
+
+    // Si se encontraron resultados, los devuelve en formato JSON
+    if (data.objectIDs && data.objectIDs.length > 0) {
+      res.json(data.objectIDs);
+    } 
+  } catch (error) {
+   
+    console.error('Error al buscar el elemento:', error);
+    res.status(500).json({ error: 'Error al buscar el elemento' });
+  }
+});
+
+// Ruta para obtener un objeto de arte por su ID y traducir algunos campos
+router.get('/objeto/:id', async (req, res) => {
+  const { id } = req.params; // Obtiene el ID del objeto desde la URL
 
   try {
-    const { selectDepartamento, entradaPalabra, entradaLocalizacion, contenedorTarjetas } = domElements;
-    const departamentoId = selectDepartamento.value;
-    const palabra = entradaPalabra.value;      
-    const localizacionValor = entradaLocalizacion.value;  
+    // Realiza una solicitud a la API para obtener el objeto segun su ID
+    const fetch = (await import('node-fetch')).default;
+    const response = await fetch(`${urlAPI}objects/${id}`);
+    const data = await response.json(); // se convierte la respuesta en JSON
 
-    // Comienza a construir la URL de búsqueda
-    let url = `${config.urlAPI}buscar?`;
+    // Traduce los campos -> faltaria fecha
+    const title = await translateText(data.title);
+    const culture = await translateText(data.culture || 'Desconocido');
+    const dynasty = await translateText(data.dynasty || 'Desconocido');
+    
+    // Devuelve los datos del objeto con los campos traducidos
+    res.json({ ...data, title, culture, dynasty });
+  } catch (error) {
+    console.error('Error al cargar el objeto:', error);
+    res.status(500).json({ error: 'Error al cargar el objeto' });
+  }
+});
 
-    // Si hay un departamento seleccionado, añade el parámetro a la URL
-    // Si no hay departamento, no agrega el parámetro y busca en todos los departamentos
-    if (departamentoId) {
-      url += `departamentoId=${departamentoId}&`;
-    }
+// Funcion de traduccion utilizando `node-google-translate-skidz`
+// Esta función toma un texto en ingles y lo traduce al español
+async function translateText(text) {
+  if (!text || typeof text !== 'string') {
+    return 'Sin traducción'; // Si no hay texto valido devuelve un SIn traaduccion
+  }
 
-    // Si hay una palabra clave ingresada, añade el parámetro a la URL
-    if (palabra) {
-      url += `palabra=${encodeURIComponent(palabra)}&`;
-    }
+  try {
+    const resultado = await translate({
+      text,
+      source: 'en',  
+      target: 'es'   
+    });
 
-    // Si hay una localización ingresada, añade el parámetro a la URL
-    if (localizacionValor) {
-      url += `localizacion=${encodeURIComponent(localizacionValor)}&`;
-    }
-
-    // Quita el último '&' de la URL si existe
-    url = url.replace(/&$/, '');
-
-    console.log('URL de búsqueda:', url);
-
-    // Realiza la consulta a la API
-    const respuesta = await fetch(url);
-    const data = await respuesta.json();
-
-    if (data.length > 0) {
-      config.idsObjetos = data;
-      config.totalPaginas = Math.ceil(config.idsObjetos.length / 20);
-      config.paginaActual = 1;
-      mostrarPagina(config.paginaActual, domElements);  // Muestra la primera página de resultados
-      actualizarBotones(domElements);  // Actualiza los botones de paginación
+    // Devuelve el texto traducido si la traducción fue exitosa
+    if (resultado && resultado.translation) {
+      return resultado.translation; 
     } else {
-      contenedorTarjetas.innerHTML = 'No se encontraron elementos.';
+      return 'Error en la traducción'; 
     }
   } catch (error) {
-    console.error('Error al buscar el elemento:', error);
-  } finally {
-    domElements.spinner.style.display = 'none';
+    console.error('Error en la traducción:', error);
+    return 'Error en la traducción'; 
   }
 }
 
+// Exporta el enrutador para que pueda ser utilizado en otras partes del código
+module.exports = router;
 
