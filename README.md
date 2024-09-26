@@ -2,10 +2,8 @@
 =======
 # IntegradorWEB2
 
-## tecnologias utilizadas
--express
--node-fetch
--google-translate
+
+
 
 
 ## Funcionamiento:
@@ -17,9 +15,21 @@
 ### Funcionamiento: Recomendaciones
 - Si se busca por localizacion utilizar Japan -> es de las culturas mas completa. Muchos objetos no traen cultura definida
 - Si se busca solo por departamento recomiendo "Arms and Armor", "Musical Instruments" y "Egyptian Art" -> A mi parecer son los que mas destacan en lo visual, con esto me refiero a que es mas facil identificar si la busqueda la hace bien. Seria raro que en "Arms and Armor" te traiga un cuadro de flores.
+
 -Si se busca por palabra clave recomiendo ingresar "weapons" -> es una de las mas completa, la matoria de objetos trae cultura, es visualmente obvia y la traduccion esta mas completa. Por ejemplo si se busca "book" hay muchos libros sin imagenes o de titulo tienen book.
-Si se quiere buscar una frase mas larga recomiendo "Axe Head" -> visualmente es mas facil de ver si es correcto o no.
+- Si se quiere buscar una frase mas larga recomiendo "Axe Head" -> visualmente es mas facil de ver si es correcto o no.
 - si se quiere buscar por palabra clave y localizzacion recomiendo "Armors" y "Europe" -> ""
+
+## Tecnologias Utilizadas
+- **Node.js**: Entorno de ejecucion para JavaScript en el lado del servidor
+- **Express**: Framework necesario para las consultas a la API
+- **node-fetch**: Para realizar solicitudes HTTP a la API 
+- **node-google-translate-skidz**: Para traducir textos 
+- **JavaScript**: Lenguaje de programacion utilizado en el proyecto.
+- **HTML/CSS**: Para la estructura y el diseño de la interfaz del usuario
+
+- **en package.json se pueden ver sus respectivas versiones**
+
 
 #### Cosas que no realice en el proyecto
 - No utilice el motor de plantilla visto dos clases antes de la entrega (PUG)
