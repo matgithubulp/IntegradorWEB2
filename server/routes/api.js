@@ -30,42 +30,35 @@ router.get('/departments', async (req, res) => {
 */
 router.get('/buscar', async (req, res) => {
   try {
-    // Obtiene los parametros de la consulta (palabra, localizacion, departamentoId)
     const palabra = req.query.palabra;
     const localizacion = req.query.localizacion;
     const departamentoId = req.query.departamentoId;
-    
-    // Comienza a formar la URL para hacer la bsqueda en la API
-    let url = `${urlAPI}search?hasImages=true`;
 
-    // Si se proporciona una palabra clave, la añade a la URL
+    let url = `${urlAPI}search?hasImages=true`;
+    
     if (palabra) {
       url += `&q=${palabra}`;
     }
-
-    // Si se proporciona una localizacion, la añade a la URL
     if (localizacion) {
-      url += `&geoLocation=${localizacion}`;
+      url += `&q=${palabra ? `${palabra} ` : ''}&geoLocation=${localizacion}`;
     }
-
-    // Si se proporciona un ID de departamento, lo añade a la URL
     if (departamentoId) {
-      url += `&departmentId=${departamentoId}`;
+      url += `&q=${palabra ? `${palabra} ` : ''}&departmentId=${departamentoId}`;
     }
 
-    // Muestra la URL construida en la consola para fines de depuracion
     console.log('url para buscar():', url);
-
-    // Realiza la solicitud a la API usando la URL formada
     const fetch = (await import('node-fetch')).default;
     const response = await fetch(url);
 
-    // Convierte la respuesta en JSON
-    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(`Error en la respuesta de la API: ${response.status}`);
+    }
 
-    // Si se encontraron resultados, los devuelve en formato JSON
+    const data = await response.json();
     if (data.objectIDs && data.objectIDs.length > 0) {
       res.json(data.objectIDs);
+    } else {
+      res.status(404).json({ error: 'No se encontraron objetos.' });
     }
   } catch (error) {
     console.error('Error al buscar el elemento:', error);
